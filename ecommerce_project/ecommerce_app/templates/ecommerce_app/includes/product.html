@@ -1,0 +1,17 @@
+{% load static %}
+
+
+{% block content %}
+<li>
+    <article class="product">
+        <a href="{%url "product-detail-page" product.slug%}">
+            <img src="{{ product.image.url }}" alt={{product.title}}>
+            <div class="product_content">
+                <h3>{{product.title}}</h3>
+                <p>{{product.description}}</p>
+                <p>{{product.price}}</p>
+            </div>
+        </a>
+    </article>
+</li>
+{% endblock content %}

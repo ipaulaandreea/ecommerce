@@ -1,1 +1,15 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Magazin{% endblock %}
+
+
+
+
+{% block content %}
+<section id="store-index">
+{%for product in products%}
+    {%include "ecommerce_app/includes/product.html"%}
+{% endfor %}
+</section>
+{% endblock content %}
