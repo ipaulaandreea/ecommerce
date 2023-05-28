@@ -2,7 +2,7 @@
 
 
 {% block content %}
-<li>
+{% comment %} <li>
     <article class="product">
         <a href="{%url "product-detail-page" product.slug%}">
             <img src="{{ product.image.url }}" alt={{product.title}}>
@@ -13,5 +13,5 @@
             </div>
         </a>
     </article>
-</li>
+</li> {% endcomment %}
 {% endblock content %}

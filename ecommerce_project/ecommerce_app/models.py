@@ -20,7 +20,7 @@ class Product (models.Model):
     price=MoneyField(decimal_places=2, default=0, default_currency='USD',max_digits=11,null=False)
     image=models.ImageField(upload_to="uploads/product_photos", blank=True)
     category=models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
-    slug=models.SlugField(unique=True, db_index=True)
+    
 
     def __str__(self):
         return self.title
