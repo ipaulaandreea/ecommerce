@@ -62,7 +62,9 @@ ROOT_URLCONF = 'ecommerce_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / "templates"
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -134,8 +136,8 @@ STATICFILES_DIRS=[
     BASE_DIR/"static"
 ]
 
-MEDIA_ROOT=BASE_DIR/"uploads"
-MEDIA_URL="/product_photos/"
+MEDIA_ROOT=BASE_DIR/"uploads/product_photos"
+MEDIA_URL="/files/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
