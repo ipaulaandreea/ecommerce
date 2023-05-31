@@ -16,8 +16,8 @@
     justify-content: flex-start;
 }
 .navbar {
-    background: #35e191b1;
-    position: relative;
+    background: #7db89cb1;
+    position: top;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -106,6 +106,3 @@ body {
     font: bold;
 }
 
-.p-5{
-    background-color: #20c997;
-}

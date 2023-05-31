@@ -23,3 +23,7 @@ def cart(View):
 
 def checkout(View):
     pass
+
+def auth(request):
+    context={}
+    return render (request, "ecommerce_app/auth.html", context)

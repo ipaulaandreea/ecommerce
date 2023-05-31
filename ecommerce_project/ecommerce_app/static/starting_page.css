@@ -1,0 +1,14 @@
+/* .p-5{
+    background-color: #20c997;
+} */
+
+.jumbotron{
+background-image: url("https://www.technogym.com/wpress/wp-content/uploads/2019/04/indoor-plants-header.jpg");
+text-align: left;
+border-radius: 30px;
+}
+
+.btn {
+    position: right;
+}
+
