@@ -25,6 +25,12 @@ class Product (models.Model):
     def __str__(self):
         return self.title
     
+    def imageURL(self):
+        try:
+            url=self.image.url
+        except:
+            url=""
+        return url
     class Meta:
         db_table = 'products'
         verbose_name_plural = "products"

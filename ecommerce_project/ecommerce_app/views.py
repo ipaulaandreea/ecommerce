@@ -7,7 +7,11 @@ from django.views import View
 from .models import Category, Product, Address, Client, Order, OrderItem
 
 def starting_page(request):
-    context={}
+    products=Product.objects.all()
+    context={
+        'products': products
+    }
+    
     return render (request, "ecommerce_app/starting_page.html", context)
     # template_name="ecommerce_app/starting_page.html"
     # model=Product
@@ -18,8 +22,9 @@ def starting_page(request):
     #     return queryset
     # #create pagination 
 
-def cart(View):
-    pass
+def cart(request):
+    context={}
+    return render (request, "ecommerce_app/cart.html", context)
 
 def checkout(View):
     pass

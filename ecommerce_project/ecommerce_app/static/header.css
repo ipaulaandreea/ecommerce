@@ -17,7 +17,6 @@
 }
 .navbar {
     background: #7db89cb1;
-    position: top;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -106,3 +105,16 @@ body {
     font: bold;
 }
 
+.navbar-nav {
+    --bs-nav-link-padding-x: 0;
+    --bs-nav-link-padding-y: 0.5rem;
+    --bs-nav-link-font-weight: ;
+    --bs-nav-link-color: rgb(0 0 0 / 90%);
+    --bs-nav-link-hover-color: var(--bs-navbar-hover-color);
+    --bs-nav-link-disabled-color: rgb(0 0 0 / 30%);
+    display: flex;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}

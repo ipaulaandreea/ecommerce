@@ -31,12 +31,15 @@ Magazinul
 
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-2 g-lg-5">
     <div class="col">
+      {%for product in products%}
       <div class="card h-100">
-        <img src="https://cdn.shopify.com/s/files/1/0150/6262/files/the-sill_LargeMonsteradeliciosa_Large_Mexiaplanter-CementCream_variant.jpg?v=1682453870" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Product 1</h5>
-        <p class="card-text">A short description (optional).</p>
-        <p class="card-text">PRICE PLACEHOLDER</p>
+        <img src="{{product.imageURL}}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <div class="py-2 text-uppercase">
+            <h5 class="card-title">{{product.title}}</h5></div>
+        <p class="card-text">{{product.description}}</p>
+        <br></br>
+        <p class="card-price">{{product.price}}</p>
         <div class="d-flex align-items-end justify-content-end">
         <button type="button" class="btn btn-light">Add to wishlist <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
@@ -48,14 +51,18 @@ Magazinul
       </div>
     </div>
   </div>
-  <div class="col">
+  {% endfor %}
+  {% comment %} <div class="col">
     <div class="card h-100">
       <img src="https://plantila.ro/wp-content/uploads/2022/11/ficus-mic-scaled-1200x900.jpg" class="card-img-top" alt="...">
       <div class="card-body">
-        <h5 class="card-title">Product 1</h5>
+        <div class="py-2 text-uppercase">
+          <h5 class="card-title">Product 1</h5></div>
         <p class="card-text">A short description (optional).</p>
-        <p class="card-text">PRICE PLACEHOLDER</p>
+        <br></br>
+        <p class="card-price">PRICE PLACEHOLDER</p>
         <div class="d-flex align-items-end justify-content-end">
+          
         <button type="button" class="btn btn-light">Add to wishlist <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
         </svg></button>
@@ -70,9 +77,11 @@ Magazinul
     <div class="card h-100">
       <img src="https://cdn.shopify.com/s/files/1/0150/6262/files/the-sill_LargeMonsteradeliciosa_Large_Mexiaplanter-CementCream_variant.jpg?v=1682453870" class="card-img-top" alt="...">
       <div class="card-body">
-        <h5 class="card-title">Product 1</h5>
+        <div class="py-2 text-uppercase">
+          <h5 class="card-title">Product 1</h5></div>
         <p class="card-text">A short description (optional).</p>
-        <p class="card-text">PRICE PLACEHOLDER</p>
+        <br></br>
+        <p class="card-price">PRICE PLACEHOLDER</p>
         <div class="d-flex align-items-end justify-content-end">
         <button type="button" class="btn btn-light">Add to wishlist <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
@@ -88,9 +97,11 @@ Magazinul
         <div class="card h-100">
           <img src="https://plantila.ro/wp-content/uploads/2022/11/ficus-mic-scaled-1200x900.jpg" class="card-img-top" alt="...">
           <div class="card-body">
-            <h5 class="card-title">Product 1</h5>
+            <div class="py-2 text-uppercase">
+            <h5 class="card-title">Product 1</h5></div>
             <p class="card-text">A short description (optional).</p>
-            <p class="card-text">PRICE PLACEHOLDER</p>
+            <br></br>
+            <p class="card-price">PRICE PLACEHOLDER</p>
             <div class="d-flex align-items-end justify-content-end">
             <button type="button" class="btn btn-light">Add to wishlist <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
@@ -105,10 +116,12 @@ Magazinul
     <div class="col">
       <div class="card h-100">
         <img src="https://cdn.shopify.com/s/files/1/0150/6262/files/the-sill_LargeMonsteradeliciosa_Large_Mexiaplanter-CementCream_variant.jpg?v=1682453870" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Product 1</h5>
+        <div class="card-body">
+        <div class="py-2 text-uppercase">
+          <h5 class="card-title">Product 1</h5></div>
         <p class="card-text">A short description (optional).</p>
-        <p class="card-text">PRICE PLACEHOLDER</p>
+        <br></br>
+        <p class="card-price">PRICE PLACEHOLDER</p>
         <div class="d-flex align-items-end justify-content-end">
         <button type="button" class="btn btn-light">Add to wishlist <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
@@ -123,7 +136,7 @@ Magazinul
   </div>
 </div>
 </div>
-</div>
+</div> {% endcomment %}
 
 
 
