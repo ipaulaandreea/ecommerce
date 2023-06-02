@@ -51,6 +51,7 @@ class Address(models.Model):
         verbose_name_plural = "addresses"
     
 class Client (models.Model):
+    user=models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     first_name=models.CharField(max_length=50, null=False)
     last_name=models.CharField(max_length=50, null=False)
     email=models.EmailField()
@@ -67,6 +68,7 @@ class Order (models.Model):
     client=models.ForeignKey(Client,on_delete=models.SET_NULL, null=True, blank=True)
     submitted=models.DateTimeField(auto_now_add=True)
     shipping_address=models.ForeignKey(Address, on_delete=models.PROTECT)
+    completed=models.BooleanField(default=False, null=True, blank=False)
 
     def __str__(self):
         return str(self.id)
