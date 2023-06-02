@@ -46,6 +46,10 @@ def register_user(request):
     }
     return render(request, "ecommerce_app/register.html",context)
 
+def logout_user(request):
+    logout(request)
+    messages.success(request, ("You have been successfully logged out!"))
+    return redirect('starting-page')
 
 def starting_page(request):
     products=Product.objects.all()
