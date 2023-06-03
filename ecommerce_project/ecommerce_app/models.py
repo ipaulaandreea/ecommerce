@@ -17,7 +17,7 @@ class Category (models.Model):
 class Product (models.Model):
     title=models.CharField(max_length=150, null=False)
     description=models.TextField (blank=True)
-    price=MoneyField(decimal_places=2, default=0, default_currency='USD',max_digits=11,null=False)
+    price=models.DecimalField(max_digits=10, decimal_places=2)
     image=models.ImageField(upload_to="uploads/product_photos", blank=True)
     category=models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     
@@ -51,7 +51,7 @@ class Address(models.Model):
         verbose_name_plural = "addresses"
     
 class Client (models.Model):
-    user=models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
     first_name=models.CharField(max_length=50, null=False)
     last_name=models.CharField(max_length=50, null=False)
     email=models.EmailField()
@@ -64,27 +64,40 @@ class Client (models.Model):
         db_table = 'clients'
         verbose_name_plural = "clients"
 
-class Order (models.Model):
-    client=models.ForeignKey(Client,on_delete=models.SET_NULL, null=True, blank=True)
-    submitted=models.DateTimeField(auto_now_add=True)
-    shipping_address=models.ForeignKey(Address, on_delete=models.PROTECT)
-    completed=models.BooleanField(default=False, null=True, blank=False)
+# class Cart (models.Model):
+#     client=models.ForeignKey(Client,on_delete=models.SET_NULL, null=True, blank=True)
+#     submitted=models.DateTimeField(auto_now_add=True)
+#     shipping_address=models.ForeignKey(Address, on_delete=models.PROTECT)
+#     completed=models.BooleanField(default=False, null=True, blank=False)
 
-    def __str__(self):
-        return str(self.id)
+#     def __str__(self):
+#         return str(self.id)
 
-    class Meta:
-        db_table = 'orders'
-        verbose_name_plural = "orders"
+#     class Meta:
+#         db_table = 'orders'
+#         verbose_name_plural = "orders"
 
-class OrderItem (models.Model):
-    product=models.ForeignKey(Product, on_delete=models.PROTECT)
-    quantity=models.IntegerField (default=0, null=False)
-    order_id=models.ForeignKey(Order, on_delete=models.PROTECT, null=False)
+# class OrderItem (models.Model):
+#     product=models.ForeignKey(Product, on_delete=models.PROTECT)
+#     quantity=models.IntegerField (default=0, null=False)
+#     order_id=models.ForeignKey(Order, on_delete=models.PROTECT, null=False)
     
-    def __str__(self):
-        return str(self.id)
+#     def __str__(self):
+#         return str(self.id)
+
+#     class Meta:
+#         db_table = 'order_items'
+#         verbose_name_plural = "Order Items"
+
+class Cart(models.Model):
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    product=models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity=models.PositiveIntegerField(default=1)
+
+    def total_cost(self):
+        total_cost=self.quantity*self.product.price
+        return total_cost
 
     class Meta:
-        db_table = 'order_items'
-        verbose_name_plural = "Order Items"
+        db_table = 'carts'
+        verbose_name_plural = "Carts"

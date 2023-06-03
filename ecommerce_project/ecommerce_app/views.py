@@ -8,10 +8,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Category, Product, Address, Client, Order, OrderItem
+from .models import Category, Product, Address, Client, Cart
 from django.contrib.auth.forms import UserCreationForm
 from .forms import UserForm
-
+from django.http import HttpResponseRedirect
 
 def login_user(request):
     if request.method=="POST": 
@@ -58,12 +58,35 @@ def starting_page(request):
     }
     return render (request, "ecommerce_app/starting_page.html", context)
 
-class CartView(DetailView):
-    model=Order
-    template_name="ecommerce_app/cart.html"
 
-def checkout(View):
+@login_required(redirect_field_name="login_user")
+def cart(request):
+    user=request.user
+    cartitems=Cart.objects.filter(user=user)
+    cart_amt=0
+    for cartitem in cartitems:
+        prod_amt= (cartitem.product.price)*(cartitem.quantity)
+        cart_amt += prod_amt
+    context={
+    'cartitems': cartitems,
+    'cart_amt':cart_amt
+    }
+    return render (request, "ecommerce_app/cart.html", context)
+
+
+def add_to_cart(request):
+    if request.method=='POST':
+        user=request.user
+        product_id=request.POST.get('product_id')
+        product=Product.objects.get(id=product_id)
+        Cart(user=user, product=product).save()
+        messages.success(request, ("Item successfully added to cart!"))
+        return redirect('starting-page')
+
+def remove_from_cart():
     pass
 
+def modify_product_quantity():
+    pass
 
     
