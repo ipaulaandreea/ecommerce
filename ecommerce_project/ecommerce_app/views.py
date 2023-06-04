@@ -89,4 +89,7 @@ def remove_from_cart():
 def modify_product_quantity():
     pass
 
+def checkout(request):
+    return render (request, "ecommerce_app/checkout.html")
+
     

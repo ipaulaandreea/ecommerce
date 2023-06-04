@@ -2,16 +2,15 @@
 {% load static %}
 {% block css %}
   <link rel="stylesheet" href="{% static 'cart.css' %}">
-{% endblock %}
-
+  {% endblock %}
 {% block title %}
 Shopping Cart
 {% endblock %}
 
-
-
-
 {% block content %}
+{% block extra_scripts %}
+
+<script src="{% static 'js/qty.js' %}"></script>
 <br></br>
 <br></br>
 <div class="px-4 px-lg-0">
@@ -44,7 +43,7 @@ Shopping Cart
                     </th>
                   </tr>
                 </thead>
-                
+            
                 <tbody>
                   {% for cartitem in cartitems %}
                   <tr>
@@ -57,7 +56,20 @@ Shopping Cart
                       </div>
                     </th>
                     <td class="border-0 align-middle"><strong>${{cartitem.product.price}}</strong></td>
-                    <td class="border-0 align-middle"><strong>{{cartitem.quantity}}</strong></td>
+                    <td class="border-10 align-middle" width="120px">
+                      <div class="cart-product-quantity" width="130px">
+                        <div class="input-group quantity">
+                            <div class="input-group-prepend decrement-btn" style="cursor: pointer">
+                                <span class="input-group-text">-</span>
+                            </div>
+                            <input type="text" class="qty-input form-control" maxlength="2" max="10" value="1">
+                            <div class="input-group-append increment-btn" style="cursor: pointer">
+                                <span class="input-group-text">+</span>
+                            </div>
+                        </div>
+                      </div>
+                    
+                  </td>
                     <td class="border-0 align-middle"><a href="#" class="text-dark"><i class="fa fa-trash"></i></a></td>
                   </tr>
                   {% endfor %}
@@ -71,9 +83,13 @@ Shopping Cart
           <div class="col-lg-6">
             <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Delivery address</div>
             <div class="p-4">
+              
               <div class="card border-light mb-4" style="max-width: 40rem;">
                 <div class="card-body">
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <h5 class="card-title">Adress 1</h5>
+                  <p class="card-text">Address info</p>
+                  <a href="#" class="btn btn-primary">Select different address</a>
+                  <a href="#" class="btn btn-primary">Create new address</a>
                 </div>
               </div>
             </div>
@@ -94,7 +110,7 @@ Shopping Cart
                 <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
                   <h5 class="font-weight-bold">$ {{cart_amt}}</h5>
                 </li>
-              </ul><a href="#" class="btn btn-dark rounded-pill py-2 btn-block">Procceed to checkout</a>
+              </ul><a href="{%url "checkout" %}" class="btn btn-dark rounded-pill py-2 btn-block">Procceed to checkout</a>
               
             </div>
           </div>
@@ -105,5 +121,5 @@ Shopping Cart
   </div>
 
 
-  
+  {% endblock %}
 {% endblock %}
