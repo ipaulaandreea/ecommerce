@@ -1,4 +1,23 @@
-// $(document).ready(function () {
+$(document).ready(function () {
+
+// const REMOVE_FROM_CART_BUTTONS = document.getElementById("trash-btn")
+// console.log(REMOVE_FROM_CART_BUTTONS)
+// function delete_func() { 
+//     for (let i=0;i<REMOVE_FROM_CART_BUTTONS.length;i++)
+//     button=REMOVE_FROM_CART_BUTTONS[i];
+//     buttonClicked=Event.target;
+// }
+// button.addEventListener('click', delete_func(), buttonClicked.parentElement.remove())
+
+
+
+
+
+
+    $(".add-to-cart").click((event) => {
+        alert("clicked button");
+        event.stopPropagation();
+    });
 
 $('.increment-btn').click(function (e) {
     e.preventDefault();
@@ -22,5 +41,4 @@ $('.decrement-btn').click(function (e) {
         $(this).parents('.quantity').find('.qty-input').val(value);
     }
 });
-
-// });
+})

@@ -8,9 +8,7 @@ Shopping Cart
 {% endblock %}
 
 {% block content %}
-{% block extra_scripts %}
 
-<script src="{% static 'js/qty.js' %}"></script>
 <br></br>
 <br></br>
 <div class="px-4 px-lg-0">
@@ -65,14 +63,31 @@ Shopping Cart
                             <input type="text" class="qty-input form-control" maxlength="2" max="10" value="1">
                             <div class="input-group-append increment-btn" style="cursor: pointer">
                                 <span class="input-group-text">+</span>
+                                
                             </div>
                         </div>
                       </div>
+                  
+                  </td>
+                  
+
+                  <td id="remove_from_cart">
+                    
+                    {% comment %} <form action="{%url "remove_from_cart"%}" method="POST">
+                    {% csrf_token %} {% endcomment %}
+                        {% comment %} <input type="hidden" value="{{cartitem.product})" name="cartitem_product"> {% endcomment %}
+                        <button type="submit" class="trash-btn border-0 align-middle" id="remove-{{cartitem.product.id}}" onclick="remove_item({{cartitem.product.id}})">
+                          <a href="" class="text-dark"> 
+                            <i class="fa fa-trash"></i>
+                          </a>
+                        </button>                         
+                  </td>
+                        {% endfor %}     {% comment %} </form> {% endcomment %}
                     
                   </td>
-                    <td class="border-0 align-middle"><a href="#" class="text-dark"><i class="fa fa-trash"></i></a></td>
+                
                   </tr>
-                  {% endfor %}
+      
                 </tbody>
               </table>
             </div>
@@ -120,6 +135,11 @@ Shopping Cart
     </div>
   </div>
 
+  <script src="{% static 'js/qty.js' %}" ></script>
+ 
+  <script src="{% static 'js/functions.js' %}" ></script>
+
+  {% block extra_scripts %}
 
   {% endblock %}
 {% endblock %}

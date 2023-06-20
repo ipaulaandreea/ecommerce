@@ -83,8 +83,14 @@ def add_to_cart(request):
         messages.success(request, ("Item successfully added to cart!"))
         return redirect('starting-page')
 
-def remove_from_cart():
-    pass
+# def remove_from_cart(request):
+#      if request.method=='POST':
+#         user=request.user
+#         product_id=request.POST.get('cartitem_product')
+#         product=Product.objects.get(id=product_id)
+#         Cart(user=user, product=product).delete()
+#         messages.success(request, ("Item successfully removed cart!"))
+#         return redirect('cart')
 
 def modify_product_quantity():
     pass
