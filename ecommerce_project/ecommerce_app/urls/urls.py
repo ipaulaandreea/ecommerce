@@ -1,8 +1,6 @@
-from django.urls import path
-from . import views
+from django.urls import include, path
+from ..views import views
 from django.contrib.auth import views as auth_views
-
-
 
 urlpatterns= [
 path("", views.starting_page, name="starting-page"),
@@ -14,5 +12,5 @@ path("checkout/",views.checkout,name="checkout"),
 path("add_to_cart",views.add_to_cart, name="add_to_cart"),
 # path("remove_from_cart",views.add_to_cart, name="remove_from_cart"),
 path("login_user", auth_views.LoginView.as_view()),
-
+path("api/", include("ecommerce_app.urls.api.urls"))
 ]

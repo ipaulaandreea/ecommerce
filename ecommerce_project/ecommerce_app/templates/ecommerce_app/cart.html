@@ -11,20 +11,26 @@ Shopping Cart
 
 <br></br>
 <br></br>
+
 <div class="px-4 px-lg-0">
     <!-- For demo purpose -->
     <div class="container text-white py-2 text-center">
       <h1 class="display-4">Your shopping cart</h1>
     </div>
+
     <!-- End -->
   {% comment %} {% for orderitem in orderitems  %} {% endcomment %}
     <div class="pb-5">
       <div class="container">
-        <div class="row">
+        <div class="loader"></div>
+        <div id="empty-cart" class="row">
+          <h1>Your cart is empty!</h1>
+        </div>
+        <div class="row cart-content">
           <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
             <!-- Shopping cart table -->
             <div class="table-responsive">
-              <table class="table">
+              <table id="cart-table" class="table">
                 <thead>
                   <tr>
                     <th scope="col" class="border-0 bg-light">
@@ -41,60 +47,14 @@ Shopping Cart
                     </th>
                   </tr>
                 </thead>
-            
-                <tbody>
-                  {% for cartitem in cartitems %}
-                  <tr>
-                    <th scope="row" class="border-0">
-                      <div class="p-2">
-                        <img src="{{cartitem.product.imageURL}}" alt="" width="70" class="img-fluid rounded shadow-sm">
-                        <div class="ml-3 d-inline-block align-middle">
-                          <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle">{{cartitem.product}}</a></h5><span class="text-muted font-weight-normal font-italic d-block">Category: {{cartitem.product.category}}</span>
-                        </div>
-                      </div>
-                    </th>
-                    <td class="border-0 align-middle"><strong>${{cartitem.product.price}}</strong></td>
-                    <td class="border-10 align-middle" width="120px">
-                      <div class="cart-product-quantity" width="130px">
-                        <div class="input-group quantity">
-                            <div class="input-group-prepend decrement-btn" style="cursor: pointer">
-                                <span class="input-group-text">-</span>
-                            </div>
-                            <input type="text" class="qty-input form-control" maxlength="2" max="10" value="1">
-                            <div class="input-group-append increment-btn" style="cursor: pointer">
-                                <span class="input-group-text">+</span>
-                                
-                            </div>
-                        </div>
-                      </div>
-                  
-                  </td>
-                  
-
-                  <td id="remove_from_cart">
-                    
-                    {% comment %} <form action="{%url "remove_from_cart"%}" method="POST">
-                    {% csrf_token %} {% endcomment %}
-                        {% comment %} <input type="hidden" value="{{cartitem.product})" name="cartitem_product"> {% endcomment %}
-                        <button type="submit" class="trash-btn border-0 align-middle" id="remove-{{cartitem.product.id}}" onclick="remove_item({{cartitem.product.id}})">
-                          <a href="" class="text-dark"> 
-                            <i class="fa fa-trash"></i>
-                          </a>
-                        </button>                         
-                  </td>
-                        {% endfor %}     {% comment %} </form> {% endcomment %}
-                    
-                  </td>
-                
-                  </tr>
-      
+                <tbody id="table-rows">      
                 </tbody>
               </table>
             </div>
             <!-- End -->
           </div>
         </div>
-        <div class="row py-5 p-4 bg-white rounded shadow-sm">
+        <div class="row py-5 p-4 bg-white rounded shadow-sm cart-summary">
           <div class="col-lg-6">
             <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Delivery address</div>
             <div class="p-4">

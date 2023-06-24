@@ -2,15 +2,16 @@ const ADD_TO_CART_BUTTON_CLASS = "add-to-cart";
 
 let addToCart = (productId) => {
     console.log(productId);
-    let sessionCart = sessionStorage.getItem("cart");
-    cart = !sessionCart ? 
+    let localSessionCart = localStorage.getItem("cart");
+    cart = !localSessionCart ? 
     {[productId]: {qty: 1}} : 
-        updateQty(sessionCart, productId);
-    sessionStorage.setItem("cart", JSON.stringify(cart));
+        updateQty(localSessionCart, productId);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    window.location.href = '/cart';
 }
 
-let updateQty = (sessionCart, productId) => {
-    let cart = JSON.parse(sessionCart);
+let updateQty = (localSessionCart, productId) => {
+    let cart = JSON.parse(localSessionCart);
     let product = cart[productId];
     if (product) {
         product.qty += 1;

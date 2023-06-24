@@ -1,12 +1,88 @@
-// const REMOVE_FROM_CART_BUTTONS = document.getElementsByClassName("trash-btn");
-debugger;
-// console.log(REMOVE_FROM_CART_BUTTONS)
+$(document).ready(function() {
+  console.log( "ready!" );
+  displayCart();
+});
 
-function remove_item(productId) { 
-  // let id=document.getElementById("myvariable");
-  // let selecteditem=id;
-  console.log(productId)
+let displayCart = () => {
+  let localSessionCart = localStorage.getItem('cart');
+  if (localSessionCart) {
+    displayCartContent(JSON.parse(localSessionCart));
+  } else {
+    displayCartIsEmpty();
+  }
+}
 
-// REMOVE_FROM_CART_BUTTONS.addEventListener('click', remove_item())
+let displayCartIsEmpty = () => {
+  $("#empty-cart").css("display", "block");
+}
 
+let displayCartContent = (cartData) => {
+  $(".loader").css("display", "block");
+  $.ajax({
+    url: 'api/products/products_data',
+    method: 'GET',
+    data: {
+      productIds: JSON.stringify(Object.keys(cartData))
+    },
+    success: function(response) {
+      console.log(response);
+      let productsData = (JSON.parse(response.response))
+      generateProductsTable(productsData);
+    },
+    error: function(xhr, status, error) {
+      console.error(error);
+    }
+  });
+}
+
+let generateProductsTable = (productsData) => {
+  let rows = [];
+  productsData.forEach(data => {
+    rows.push(createRow(data))
+  });
+
+  rows.map(row => {
+    $('#cart-table tbody').append(row);
+  });
+
+  $('.loader').css('display', 'none');
+  $('.cart-content').css('display', 'block');
+}
+
+let createRow = (productData) => {
+  return `<tr>
+  <th scope="row" class="border-0">
+    <div class="p-2">
+      <img src="` + productData.imageUrl + `" alt="" width="70" class="img-fluid rounded shadow-sm">
+      <div class="ml-3 d-inline-block align-middle">
+        <h5 class="mb-0">` + productData.title + `</h5>
+      </div>
+    </div>
+  </th>
+  <td class="border-0 align-middle"><strong>` + productData.price + ` $</strong></td>
+  <td class="border-10 align-middle" width="120px">
+    <div class="cart-product-quantity" width="130px">
+      <div class="input-group quantity">
+          <div class="input-group-prepend decrement-btn" style="cursor: pointer">
+              <span class="input-group-text">-</span>
+          </div>
+          <input type="text" class="qty-input form-control" maxlength="2" max="10" value="1">
+          <div class="input-group-append increment-btn" style="cursor: pointer">
+              <span class="input-group-text">+</span>
+          </div>
+      </div>
+    </div>
+  
+  </td>
+  <td id="remove_from_cart">
+      <input type="hidden" value="` + productData.id + `" name="cartitem_product">
+      <button type="submit" class="trash-btn border-0 align-middle" id="remove-` + productData.id + `" 
+      onclick="remove_item(` + productData.id + `)">
+        <a href="" class="text-dark"> 
+          <i class="fa fa-trash"></i>
+        </a>
+      </button>                         
+  </td>
+  </td>
+  </tr>`;
 }

@@ -1,17 +1,11 @@
 from typing import Any
-from django.db.models.query import QuerySet
 from django.shortcuts import render
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
-from django.views import View
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Category, Product, Address, Client, Cart
-from django.contrib.auth.forms import UserCreationForm
-from .forms import UserForm
-from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
+from ..models import Product, Cart
+from ..forms import UserForm
 
 def login_user(request):
     if request.method=="POST": 
