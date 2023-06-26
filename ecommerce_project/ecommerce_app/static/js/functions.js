@@ -27,6 +27,19 @@ let displayCartContent = (cartData) => {
     success: function(response) {
       console.log(response);
       let productsData = (JSON.parse(response.response))
+      
+      // function func(productsData, cartData){
+        for (let i=0;i<productsData.length;i++) {
+            let obj=productsData[i]
+            let productId=Object.keys(cartData)[i]
+            if (obj["id"].toString()===productId){
+              obj["qty"]=cartData[productId]["qty"]
+            }
+            
+    // return productsData;
+                    
+  }
+  
       generateProductsTable(productsData);
     },
     error: function(xhr, status, error) {
@@ -49,6 +62,8 @@ let generateProductsTable = (productsData) => {
   $('.cart-content').css('display', 'block');
 }
 
+// let cartobject={
+  let cartitem=localStorage.getItem('cart')
 let createRow = (productData) => {
   return `<tr>
   <th scope="row" class="border-0">
@@ -66,7 +81,7 @@ let createRow = (productData) => {
           <div class="input-group-prepend decrement-btn" style="cursor: pointer">
               <span class="input-group-text">-</span>
           </div>
-          <input type="text" class="qty-input form-control" maxlength="2" max="10" value="1">
+          <input type="text" class="qty-input form-control" maxlength="2" max="10" value="` + productData.qty  + `">
           <div class="input-group-append increment-btn" style="cursor: pointer">
               <span class="input-group-text">+</span>
           </div>

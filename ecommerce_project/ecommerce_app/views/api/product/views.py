@@ -1,9 +1,10 @@
 from django.http import JsonResponse
 import json
-from ecommerce_app.models import Product
+from ecommerce_app.models import Product, Cart
 
 def productsData(request):
     productIds = json.loads(request.GET.get("productIds"))
+    
     productsData = Product.objects.filter(id__in=productIds)
     response = []
     for product in productsData:
@@ -11,7 +12,8 @@ def productsData(request):
             'id': product.id,
             'title': product.title,
             'price': str(product.price),
-            'imageUrl': product.image.url
+            'imageUrl': product.image.url,
+            
         })
     return JsonResponse({
         "status": "success",
