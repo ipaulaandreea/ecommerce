@@ -27,20 +27,22 @@ let displayCartContent = (cartData) => {
     success: function(response) {
       console.log(response);
       let productsData = (JSON.parse(response.response))
-      
-      // function func(productsData, cartData){
-        for (let i=0;i<productsData.length;i++) {
-            let obj=productsData[i]
-            let productId=Object.keys(cartData)[i]
-            if (obj["id"].toString()===productId){
-              obj["qty"]=cartData[productId]["qty"]
-            }
-            
-    // return productsData;
-                    
-  }
-  
+      let productTotalsList=[]
+      let orderTotal=0;
+      for (let i=0;i<productsData.length;i++) {
+          let obj=productsData[i]
+          
+          let productId=Object.keys(cartData)[i]
+          if (obj["id"].toString()===productId){
+            obj["qty"]=cartData[productId]["qty"]
+            let productTotal=obj["qty"]*obj["price"]
+            obj["total"]=productTotal;
+            productTotalsList.push(productTotal);
+            orderTotal+=productTotal;
+          } 
+      }
       generateProductsTable(productsData);
+      generateSummary(orderTotal);
     },
     error: function(xhr, status, error) {
       console.error(error);
@@ -101,33 +103,12 @@ let createRow = (productData) => {
   </tr>`;
 }
 
-let generateSummary = (productsData) => {
-  let rows = [];
-  productsData.forEach(data => {
-    rows.push(createRow(data))
-  });
+let generateSummary = (orderTotal) => {
+  $('#list').append(createLi(orderTotal));
+  $('.cart-summary').css('display', 'block');
+};
 
-  rows.map(row => {
-    $('#cart-table tbody').append(row);
-  });
-
-  $('.loader').css('display', 'none');
-  $('.cart-content').css('display', 'block');
-}
-
-let createField = (productData) => {
-  return `<div class="col-lg-6">
-  <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary </div>
-  <div class="p-4">
-    <p class="font-italic mb-4">Shipping and additional costs are calculated based on values you have entered.</p>
-    <ul class="list-unstyled mb-4">
-      <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Order Subtotal </strong><strong>$390.00</strong></li>
-      <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Shipping and handling</strong><strong>$10.00</strong></li>
-      <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Tax</strong><strong>$0.00</strong></li>
-      <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
-        <h5 class="font-weight-bold">$ {{cart_amt}}</h5>
-      </li>
-    </ul><a href="{%url "checkout" %}" class="btn btn-dark rounded-pill py-2 btn-block">Procceed to checkout</a>
-    
-  </div>`
-}
+let createLi = (orderTotal) => {
+  return `<li class="d-flex justify-content-between py-3 border-bottom">
+  <strong class="text-muted">Order Subtotal </strong><strong>` + orderTotal + `$</strong></li>`  
+}          
