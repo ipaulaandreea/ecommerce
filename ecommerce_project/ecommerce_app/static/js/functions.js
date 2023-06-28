@@ -50,6 +50,7 @@ let displayCartContent = (cartData) => {
   });
 }
 
+
 let generateProductsTable = (productsData) => {
   let rows = [];
   productsData.forEach(data => {
@@ -64,9 +65,8 @@ let generateProductsTable = (productsData) => {
   $('.cart-content').css('display', 'block');
 }
 
-
 let createRow = (productData) => {
-  return `<tr>
+  return `<tr id="product-row-` + productData.id + `">
   <th scope="row" class="border-0">
     <div class="p-2">
       <img src="` + productData.imageUrl + `" alt="" width="70" class="img-fluid rounded shadow-sm">
@@ -91,12 +91,9 @@ let createRow = (productData) => {
   
   </td>
   <td id="remove_from_cart">
-      <input type="hidden" value="` + productData.id + `" name="cartitem_product">
-      <button type="submit" class="trash-btn border-0 align-middle" id="remove-` + productData.id + `" 
-      onclick="remove_item(` + productData.id + `)">
-        <a href="" class="text-dark"> 
+      <button class="trash-btn border-0 align-middle" id="remove-` + productData.id + `" 
+      onclick="deleteCartItem(` + productData.id + `)">
           <i class="fa fa-trash"></i>
-        </a>
       </button>                         
   </td>
   </td>
@@ -112,3 +109,14 @@ let createLi = (orderTotal) => {
   return `<li class="d-flex justify-content-between py-3 border-bottom">
   <strong class="text-muted">Order Subtotal </strong><strong>` + orderTotal + `$</strong></li>`  
 }          
+
+let deleteCartItem=(id)=>{
+  let localSessionCart = localStorage.getItem("cart");
+  let cart = JSON.parse(localSessionCart);
+  console.log(cart);
+  let cartid=id.toString()
+  delete cart[cartid];
+  console.log(cart);
+  localStorage.setItem("cart", JSON.stringify(cart))
+  $('#product-row-' + id).remove();
+}
