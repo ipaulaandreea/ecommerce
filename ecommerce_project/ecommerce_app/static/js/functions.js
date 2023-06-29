@@ -1,7 +1,22 @@
+let orderTotal=0;
+let products={"data":{},"total":0};
+
+// const convertedData = {};
+// data.forEach(item => {
+//   const { productid, qty, title } = item;
+//   convertedData[productid] = { qty, title };
+// });
+
+// let productsfinal={"finaldata":convertedData, "total":0};
+
+
+let productsData={};
+
 $(document).ready(function() {
   console.log( "ready!" );
   displayCart();
 });
+
 
 let displayCart = () => {
   let localSessionCart = localStorage.getItem('cart');
@@ -27,8 +42,9 @@ let displayCartContent = (cartData) => {
     success: function(response) {
       console.log(response);
       let productsData = (JSON.parse(response.response))
+      console.log(productsData)
       let productTotalsList=[]
-      let orderTotal=0;
+      products["data"]=productsData;
       for (let i=0;i<productsData.length;i++) {
           let obj=productsData[i]
           
@@ -39,8 +55,9 @@ let displayCartContent = (cartData) => {
             obj["total"]=productTotal;
             productTotalsList.push(productTotal);
             orderTotal+=productTotal;
+            products["total"]=orderTotal;
           } 
-      }
+      } 
       generateProductsTable(productsData);
       generateSummary(orderTotal);
     },
@@ -49,7 +66,6 @@ let displayCartContent = (cartData) => {
     }
   });
 }
-
 
 let generateProductsTable = (productsData) => {
   let rows = [];
@@ -75,14 +91,14 @@ let createRow = (productData) => {
       </div>
     </div>
   </th>
-  <td class="border-0 align-middle"><strong>` + productData.price + ` $</strong></td>
+  <td class="border-0 align-middle subtotals"><strong>` + productData.price + ` $</strong></td>
   <td class="border-10 align-middle" width="120px">
     <div class="cart-product-quantity" width="130px">
       <div class="input-group quantity">
           <div class="input-group-prepend decrement-btn" style="cursor: pointer">
               <span class="input-group-text">-</span>
           </div>
-          <input type="text" class="qty-input form-control" maxlength="2" max="10" value="` + productData.qty  + `">
+          <input type="text" class="qty-input form-control qty" maxlength="2" max="10" value="` + productData.qty  + `">
           <div class="input-group-append increment-btn" style="cursor: pointer">
               <span class="input-group-text">+</span>
           </div>
@@ -100,23 +116,56 @@ let createRow = (productData) => {
   </tr>`;
 }
 
+
+
 let generateSummary = (orderTotal) => {
   $('#list').append(createLi(orderTotal));
   $('.cart-summary').css('display', 'block');
 };
 
 let createLi = (orderTotal) => {
-  return `<li class="d-flex justify-content-between py-3 border-bottom">
+  return `<li class="d-flex justify-content-between py-3 border-bottom" id="total-price">
   <strong class="text-muted">Order Subtotal </strong><strong>` + orderTotal + `$</strong></li>`  
 }          
 
-let deleteCartItem=(id)=>{
+let updateCartTotal = (orderTotal) => {
+  $('#total-price').remove();
+  $('#list').append(createLi(orderTotal));
+  $('.cart-summary').css('display', 'block');
+};
+
+// let deleteCartItem=(id)=>{
+//   let localSessionCart = localStorage.getItem("cart");
+//   let cart = JSON.parse(localSessionCart);
+//   let cartid=id.toString()
+//   delete cart[cartid];
+//   localStorage.setItem("cart", JSON.stringify(cart))
+//   $('#product-row-' + id).remove();
+//   $('#total-price').remove();
+//   $('#list').remove();
+//   $('#list').append(createLi(orderTotal));
+  
+// }
+
+function findObjectByValue(data, key, value) {
+  for (let i = 0; i < data.length; i++) {
+    if (data[i][key] === value) {
+      return data[i];
+    }
+  }
+}
+
+let deleteCartItem = (id) => {
   let localSessionCart = localStorage.getItem("cart");
   let cart = JSON.parse(localSessionCart);
-  console.log(cart);
-  let cartid=id.toString()
+  let cartid = id.toString();
+  let data=products["data"];
+  let element=id;
+  let product = findObjectByValue(data, "id", id);
+  let deletedProductTotal = product["qty"] * product["price"];
   delete cart[cartid];
-  console.log(cart);
-  localStorage.setItem("cart", JSON.stringify(cart))
+  localStorage.setItem("cart", JSON.stringify(cart));
   $('#product-row-' + id).remove();
+  orderTotal -= deletedProductTotal;
+  updateCartTotal(orderTotal);
 }
