@@ -2,6 +2,12 @@
   color: black
 }
 
+
+#empty-cart{
+  text-align: center;
+  text-size-adjust: 12;
+  display: none;
+}
 .cart-content,
 .cart-summary,
 #empty-cart,
@@ -31,3 +37,7 @@
   100% { transform: rotate(360deg); }
 }
 
+.delivery, 
+.cartheader{
+  display: block;
+}

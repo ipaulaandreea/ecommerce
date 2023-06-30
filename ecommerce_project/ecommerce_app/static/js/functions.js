@@ -1,15 +1,5 @@
 let orderTotal=0;
 let products={"data":{},"total":0};
-
-// const convertedData = {};
-// data.forEach(item => {
-//   const { productid, qty, title } = item;
-//   convertedData[productid] = { qty, title };
-// });
-
-// let productsfinal={"finaldata":convertedData, "total":0};
-
-
 let productsData={};
 
 $(document).ready(function() {
@@ -22,13 +12,26 @@ let displayCart = () => {
   let localSessionCart = localStorage.getItem('cart');
   if (localSessionCart) {
     displayCartContent(JSON.parse(localSessionCart));
-  } else {
+  } if (localSessionCart==="{}") {
     displayCartIsEmpty();
+    hideCart()
   }
 }
 
+let hideCart=()=> {
+  $(".delivery").css("display","none");
+  $(".cartheader").css("display","none");
+
+
+
+
+
+
+}
 let displayCartIsEmpty = () => {
   $("#empty-cart").css("display", "block");
+
+
 }
 
 let displayCartContent = (cartData) => {
@@ -116,8 +119,6 @@ let createRow = (productData) => {
   </tr>`;
 }
 
-
-
 let generateSummary = (orderTotal) => {
   $('#list').append(createLi(orderTotal));
   $('.cart-summary').css('display', 'block');
@@ -134,19 +135,6 @@ let updateCartTotal = (orderTotal) => {
   $('.cart-summary').css('display', 'block');
 };
 
-// let deleteCartItem=(id)=>{
-//   let localSessionCart = localStorage.getItem("cart");
-//   let cart = JSON.parse(localSessionCart);
-//   let cartid=id.toString()
-//   delete cart[cartid];
-//   localStorage.setItem("cart", JSON.stringify(cart))
-//   $('#product-row-' + id).remove();
-//   $('#total-price').remove();
-//   $('#list').remove();
-//   $('#list').append(createLi(orderTotal));
-  
-// }
-
 function findObjectByValue(data, key, value) {
   for (let i = 0; i < data.length; i++) {
     if (data[i][key] === value) {
@@ -160,7 +148,6 @@ let deleteCartItem = (id) => {
   let cart = JSON.parse(localSessionCart);
   let cartid = id.toString();
   let data=products["data"];
-  let element=id;
   let product = findObjectByValue(data, "id", id);
   let deletedProductTotal = product["qty"] * product["price"];
   delete cart[cartid];
@@ -168,4 +155,10 @@ let deleteCartItem = (id) => {
   $('#product-row-' + id).remove();
   orderTotal -= deletedProductTotal;
   updateCartTotal(orderTotal);
-}
+  console.log(JSON.stringify(cart));
+  if (JSON.stringify(cart) =='{}'){
+    displayCartIsEmpty();
+    hideCart();
+  }
+  }
+
