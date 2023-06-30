@@ -21,17 +21,10 @@ let displayCart = () => {
 let hideCart=()=> {
   $(".delivery").css("display","none");
   $(".cartheader").css("display","none");
-
-
-
-
-
-
 }
+
 let displayCartIsEmpty = () => {
   $("#empty-cart").css("display", "block");
-
-
 }
 
 let displayCartContent = (cartData) => {
@@ -98,11 +91,11 @@ let createRow = (productData) => {
   <td class="border-10 align-middle" width="120px">
     <div class="cart-product-quantity" width="130px">
       <div class="input-group quantity">
-          <div button class="decrement-btn input-group-prepend" style="cursor: pointer" onclick="updateQuantity(` + productData.id + `)">
+          <div button class="decrement-btn input-group-prepend" style="cursor: pointer" onclick="decrementQuantity(` + productData.id + `)">
               <span class="input-group-text">-</span>
           </div>
-          <input type="text" class="qty-input form-control qty" maxlength="2" max="10" value="` + productData.qty  + `">
-          <div button class="increment-btn input-group-append" style="cursor: pointer" onclick="updateQuantity(` + productData.id + `)">
+          <input id="qty-` + productData.id + `" type="text" class="qty-input form-control qty" maxlength="2" max="10" value="` + productData.qty  + `">
+          <div button id="incr" class="increment-btn input-group-append" style="cursor: pointer" onclick="incrementQuantity(` + productData.id + `)">
               <span class="input-group-text">+</span>
           </div>
       </div>
@@ -162,12 +155,42 @@ let deleteCartItem = (id) => {
   }
   }
 
-updateQuantity=(id)=>{
+let incrementQuantity=(id)=>{
   let localSessionCart = localStorage.getItem("cart");
   let cart = JSON.parse(localSessionCart);
   let cartid = id.toString();
   let data=products["data"];
   let product = findObjectByValue(data, "id", id);
-  console.log(product);
+  product["qty"]+=1;
+  orderTotal+=parseInt(product["price"], 10);
+  updateCartTotal(orderTotal);
+  cart[cartid]["qty"]+=1;
+  console.log(cart[cartid]);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  let updatedQty=product["qty"]
+  updateQty(id,updatedQty);
 }
 
+
+let decrementQuantity=(id)=>{
+  let localSessionCart = localStorage.getItem("cart");
+  let cart = JSON.parse(localSessionCart);
+  let cartid = id.toString();
+  let data=products["data"];
+  let product = findObjectByValue(data, "id", id);
+  if (product["qty"]>0){
+    product["qty"]-=1;
+    orderTotal-=parseInt(product["price"], 10);
+    updateCartTotal(orderTotal);
+  } else {
+    deleteCartItem(id);
+  }
+  localStorage.setItem("cart", JSON.stringify(cart));
+  let updatedQty=product["qty"]
+  updateQty(id,updatedQty);
+}
+
+
+let updateQty=(prod,qty)=>{
+  $('#qty-' + prod).val(qty);
+}
