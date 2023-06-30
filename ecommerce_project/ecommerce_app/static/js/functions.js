@@ -98,11 +98,11 @@ let createRow = (productData) => {
   <td class="border-10 align-middle" width="120px">
     <div class="cart-product-quantity" width="130px">
       <div class="input-group quantity">
-          <div class="input-group-prepend decrement-btn" style="cursor: pointer">
+          <div button class="decrement-btn input-group-prepend" style="cursor: pointer" onclick="updateQuantity(` + productData.id + `)">
               <span class="input-group-text">-</span>
           </div>
           <input type="text" class="qty-input form-control qty" maxlength="2" max="10" value="` + productData.qty  + `">
-          <div class="input-group-append increment-btn" style="cursor: pointer">
+          <div button class="increment-btn input-group-append" style="cursor: pointer" onclick="updateQuantity(` + productData.id + `)">
               <span class="input-group-text">+</span>
           </div>
       </div>
@@ -161,4 +161,13 @@ let deleteCartItem = (id) => {
     hideCart();
   }
   }
+
+updateQuantity=(id)=>{
+  let localSessionCart = localStorage.getItem("cart");
+  let cart = JSON.parse(localSessionCart);
+  let cartid = id.toString();
+  let data=products["data"];
+  let product = findObjectByValue(data, "id", id);
+  console.log(product);
+}
 

@@ -1,4 +1,4 @@
-const ADD_TO_CART_BUTTON_CLASS = "add-to-cart";
+// const ADD_TO_CART_BUTTON_CLASS = "add-to-cart";
 
 let addToCart = (productId) => {
     console.log(productId);
