@@ -79,7 +79,8 @@ Shopping Cart
             <div class="p-4">
               <p class="font-italic mb-4">Shipping and additional costs are calculated based on values you have entered.</p>
               <ul class="list-unstyled mb-4" id="list">
-              </ul><a href="{%url "checkout" %}" class="btn btn-dark rounded-pill py-2 btn-block">Procceed to checkout</a>
+              </ul>
+              <button onclick="submitOrder({{cart}})" class="btn btn-dark rounded-pill py-2 btn-block">Procceed to checkout </button> 
             </div>
             </div>
           </div>

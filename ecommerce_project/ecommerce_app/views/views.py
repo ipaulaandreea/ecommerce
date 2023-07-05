@@ -4,8 +4,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from ..models import Product, Cart
+from ..models import Product, Cart, Order
 from ..forms import UserForm
+import json
 
 def login_user(request):
     if request.method=="POST": 
@@ -68,28 +69,14 @@ def cart(request):
     return render (request, "ecommerce_app/cart.html", context)
 
 
-def add_to_cart(request):
-    if request.method=='POST':
-        user=request.user
-        product_id=request.POST.get('product_id')
-        product=Product.objects.get(id=product_id)
-        Cart(user=user, product=product).save()
-        messages.success(request, ("Item successfully added to cart!"))
-        return redirect('starting-page')
 
-# def remove_from_cart(request):
-#      if request.method=='POST':
-#         user=request.user
-#         product_id=request.POST.get('cartitem_product')
-#         product=Product.objects.get(id=product_id)
-#         Cart(user=user, product=product).delete()
-#         messages.success(request, ("Item successfully removed cart!"))
-#         return redirect('cart')
 
-def modify_product_quantity():
-    pass
 
 def checkout(request):
     return render (request, "ecommerce_app/checkout.html")
+
+# @login_required(redirect_field_name="login_user")
+def ordersubmitted (request):
+    return render (request, "ecommerce_app/ordersubmitted.html")
 
     

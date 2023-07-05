@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
 from djmoney.models.fields import MoneyField
+from datetime import datetime
 
 
 class Category (models.Model):
@@ -51,7 +52,7 @@ class Address(models.Model):
         verbose_name_plural = "addresses"
     
 class Client (models.Model):
-    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    user=models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
     first_name=models.CharField(max_length=50, null=False)
     last_name=models.CharField(max_length=50, null=False)
     email=models.EmailField()
@@ -64,30 +65,21 @@ class Client (models.Model):
         db_table = 'clients'
         verbose_name_plural = "clients"
 
-# class Cart (models.Model):
-#     client=models.ForeignKey(Client,on_delete=models.SET_NULL, null=True, blank=True)
-#     submitted=models.DateTimeField(auto_now_add=True)
-#     shipping_address=models.ForeignKey(Address, on_delete=models.PROTECT)
-#     completed=models.BooleanField(default=False, null=True, blank=False)
+class Order(models.Model):
+    # orderline_id=models.ForeignKey(OrderLine, on_delete=models.CASCADE, null=False, blank=False)
+    # user=models.ForeignKey(Client,on_delete=models.CASCADE, null=False, blank=False)
+    created=models.DateTimeField(default=datetime.now())
+    status=models.CharField(max_length=50, null=False)
+    total_cost=models.IntegerField(default=0)
 
-#     def __str__(self):
-#         return str(self.id)
+class OrderLine (models.Model):
+    order=models.ForeignKey(Order, default=100, on_delete=models.CASCADE, null=False, blank=False)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE, null=False, blank=False)
+    qty=models.IntegerField()
+    price=models.IntegerField()
+    created=models.DateTimeField(default=datetime.now())
+    modified=models.DateTimeField(default=datetime.now())
 
-#     class Meta:
-#         db_table = 'orders'
-#         verbose_name_plural = "orders"
-
-# class OrderItem (models.Model):
-#     product=models.ForeignKey(Product, on_delete=models.PROTECT)
-#     quantity=models.IntegerField (default=0, null=False)
-#     order_id=models.ForeignKey(Order, on_delete=models.PROTECT, null=False)
-    
-#     def __str__(self):
-#         return str(self.id)
-
-#     class Meta:
-#         db_table = 'order_items'
-#         verbose_name_plural = "Order Items"
 
 class Cart(models.Model):
     user=models.ForeignKey(User, on_delete=models.CASCADE)

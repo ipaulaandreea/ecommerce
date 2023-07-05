@@ -1,0 +1,29 @@
+{% extends "ecommerce_app/base.html" %}
+{% load static %}
+{% block css %}
+  <link rel="stylesheet" href="{% static 'ordersubmitted.css' %}">
+  {% endblock %}
+{% block title %}
+Thank you for your order!
+{% endblock %}
+
+{% block content %}
+
+<br></br>
+<br></br>
+
+<div class="px-4 px-lg-0"> 
+  <div class="container text-white py-2 text-center">
+    <h1 id="submitted" class="display-4">"Your order(<span id="orderid"> </span>) has been submitted!"</h1>
+  </div>
+    </div>
+</div>
+
+
+<script src="{% static 'js/functions.js' %}" ></script>
+<script src="{% static 'js/submit.js' %}" ></script>
+
+{% block extra_scripts %}
+
+{% endblock %}
+{% endblock %}

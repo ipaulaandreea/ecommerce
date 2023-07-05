@@ -2,6 +2,7 @@ let orderTotal=0;
 let products={"data":{},"total":0};
 let productsData={};
 
+
 $(document).ready(function() {
   console.log( "ready!" );
   displayCart();
@@ -193,4 +194,56 @@ let decrementQuantity=(id)=>{
 
 let updateQty=(prod,qty)=>{
   $('#qty-' + prod).val(qty);
+}
+
+let submitOrder=(cart)=>{
+  cart=localStorage.getItem("cart")
+  console.log(cart)
+  // $(".loader").css("display", "block");
+  let input=JSON.parse(cart)
+  // cart={"1":{"qty":5},"2":{"qty":4}}
+
+  // const result = {
+  //   "products": [{
+  //     "product_id": "",
+  //     "qty":""
+  // },]
+  // };
+  
+
+  let li=[];
+  let finallist={};
+  for (let k=1;k<=((Object.keys(input)).length);k++){
+    if (input[k]){
+      li.push({"product_id":k, "qty": input[k]["qty"]})}
+      }
+      console.log("li: "+JSON.stringify(li));
+      finallist={"products":li};
+      console.log("finalist: " + JSON.stringify(finallist))    
+    
+
+  $.ajax({
+    url: 'api/orders/create',
+    method: 'POST',
+    data: {
+      orderitems: JSON.stringify(finallist)
+    },
+    
+    success: function(response) {
+      console.log(response.response);
+      let order = (JSON.parse(response.orderId))
+      localStorage.setItem("orderId", response.orderId)
+      window.location.href = 'cart/ordersubmitted';
+
+        
+      let createstr = (e) => {
+        return `<div class="container text-white py-2 text-center">
+        <h1 id="submitted" class="display-4">"Your order(#` + e + ` ) has been submitted!" </h1>
+      </div>` 
+      }
+      $('#output').append(createstr(response.orderId));
+      window.location.href = 'cart/ordersubmitted';
+      console.log("Page loaded");
+    }
+  })
 }
