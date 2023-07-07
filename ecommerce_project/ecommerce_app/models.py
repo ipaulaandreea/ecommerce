@@ -37,7 +37,7 @@ class Product (models.Model):
         verbose_name_plural = "products"
     
 class Address(models.Model):
-    name=models.CharField(max_length=50, null=False)
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=False, blank=False)
     city=models.CharField(max_length=50, null=False)
     street=models.CharField(max_length=150)
     number=models.IntegerField()
@@ -56,7 +56,7 @@ class Client (models.Model):
     first_name=models.CharField(max_length=50, null=False)
     last_name=models.CharField(max_length=50, null=False)
     email=models.EmailField()
-    address=models.ManyToManyField(Address)    
+    address=models.ForeignKey(Address, on_delete=models.CASCADE, null=False, blank=False)    
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -66,8 +66,7 @@ class Client (models.Model):
         verbose_name_plural = "clients"
 
 class Order(models.Model):
-    # orderline_id=models.ForeignKey(OrderLine, on_delete=models.CASCADE, null=False, blank=False)
-    # user=models.ForeignKey(Client,on_delete=models.CASCADE, null=False, blank=False)
+    user=models.ForeignKey(User,on_delete=models.CASCADE, null=False, blank=False)
     created=models.DateTimeField(default=datetime.now())
     status=models.CharField(max_length=50, null=False)
     total_cost=models.IntegerField(default=0)

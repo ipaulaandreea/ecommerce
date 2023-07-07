@@ -3,6 +3,56 @@ let products={"data":{},"total":0};
 let productsData={};
 
 
+// function getSessionID() {
+//   let cookies = document.cookie.split("; ");
+//   for (let i = 0; i < cookies.length; i++) {
+//     let cookie = cookies[i].split("=");
+//     if (cookie[0] === "sessionid") {
+//       return cookie[1];
+//     }
+//   }
+//   return null; // Session ID not found
+// }
+
+// // Usage:
+// const sessionID = getSessionID();
+// console.log("Session ID:", sessionID);
+function getSessionID() {
+  return $.ajax({
+    url: '/access_session/',
+    method: 'GET',
+    dataType: 'json'
+  });
+}
+
+// Usage:
+getSessionID().done(function(response) {
+  let session_id = response.session_id;
+  console.log("Session ID:", session_id);
+}).fail(function() {
+  console.log("Failed to retrieve session ID.");
+});
+
+
+function getCookie(name) {
+  var cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i].trim();
+      // Does this cookie string begin with the name we want?
+      if (cookie.substring(0, name.length + 1) === name + '=') {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+const csrfToken = getCookie('csrftoken');
+
+
+
 $(document).ready(function() {
   console.log( "ready!" );
   displayCart();
@@ -34,7 +84,8 @@ let displayCartContent = (cartData) => {
     url: 'api/products/products_data',
     method: 'GET',
     data: {
-      productIds: JSON.stringify(Object.keys(cartData))
+      productIds: JSON.stringify(Object.keys(cartData)),
+      csrfmiddlewaretoken: csrfToken
     },
     success: function(response) {
       console.log(response);
@@ -196,6 +247,7 @@ let updateQty=(prod,qty)=>{
   $('#qty-' + prod).val(qty);
 }
 
+
 let submitOrder=(cart)=>{
   cart=localStorage.getItem("cart")
   console.log(cart)
@@ -211,39 +263,44 @@ let submitOrder=(cart)=>{
   // };
   
 
-  let li=[];
+  let bigList=[];
   let finallist={};
-  for (let k=1;k<=((Object.keys(input)).length);k++){
-    if (input[k]){
-      li.push({"product_id":k, "qty": input[k]["qty"]})}
-      }
-      console.log("li: "+JSON.stringify(li));
-      finallist={"products":li};
+  let productIds=Object.keys(input);
+  productIds.forEach(productId => {
+    bigList.push({"product_id": productId, "qty": input[productId]["qty"]})
+  });
+      console.log("li: "+JSON.stringify(bigList));
+      finallist={"products":bigList};
       console.log("finalist: " + JSON.stringify(finallist))    
     
 
+  
   $.ajax({
     url: 'api/orders/create',
     method: 'POST',
     data: {
-      orderitems: JSON.stringify(finallist)
+      orderitems: JSON.stringify(finallist),
+      session_id: sessionID,
+      csrfmiddlewaretoken: csrfToken
     },
     
     success: function(response) {
       console.log(response.response);
       let order = (JSON.parse(response.orderId))
       localStorage.setItem("orderId", response.orderId)
+      
       window.location.href = 'cart/ordersubmitted';
-
+      
         
-      let createstr = (e) => {
-        return `<div class="container text-white py-2 text-center">
-        <h1 id="submitted" class="display-4">"Your order(#` + e + ` ) has been submitted!" </h1>
-      </div>` 
-      }
-      $('#output').append(createstr(response.orderId));
-      window.location.href = 'cart/ordersubmitted';
-      console.log("Page loaded");
+      // let createstr = (e) => {
+      //   return `<div class="container text-white py-2 text-center">
+      //   <h1 id="submitted" class="display-4">"Your order(#` + e + ` ) has been submitted!" </h1>
+      // </div>` 
+      // }
+      // $('#output').append(createstr(response.orderId));
+      // window.location.href = 'cart/ordersubmitted';
+      // console.log("Page loaded");
+  
     }
   })
 }

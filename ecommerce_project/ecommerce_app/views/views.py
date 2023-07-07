@@ -7,6 +7,9 @@ from django.shortcuts import render, redirect
 from ..models import Product, Cart, Order
 from ..forms import UserForm
 import json
+from django.http import HttpResponse, JsonResponse
+from django.contrib.sessions.models import Session
+from django.contrib.auth.models import User
 
 def login_user(request):
     if request.method=="POST": 
@@ -70,13 +73,15 @@ def cart(request):
 
 
 
-
-
 def checkout(request):
     return render (request, "ecommerce_app/checkout.html")
 
-# @login_required(redirect_field_name="login_user")
+@login_required(redirect_field_name="login_user")
 def ordersubmitted (request):
     return render (request, "ecommerce_app/ordersubmitted.html")
 
-    
+
+def access_session(request):
+    if request.method=="GET":
+        session_id = request.session.session_key
+    return JsonResponse({'session_id': session_id})

@@ -1,6 +1,8 @@
 from django.http import JsonResponse
 import json
 from ecommerce_app.models import Product
+from django.contrib.sessions.models import Session
+from django.contrib.auth.models import User
 
 def productsData(request):
     productIds = json.loads(request.GET.get("productIds"))

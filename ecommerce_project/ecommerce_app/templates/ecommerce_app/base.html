@@ -19,7 +19,7 @@
 
 {% include 'ecommerce_app/header.html' %}
 <div class="container-fluid">
-    <div class="row">
+    {% comment %} <div class="row"> {% endcomment %}
         <main>
             <body>
                 <br></br>
@@ -34,7 +34,7 @@
             {% block content %}
             {% endblock content %}
         </main>
-    </div>
+    {% comment %} </div> {% endcomment %}
 </div>
 
 {% include 'ecommerce_app/footer.html' %}

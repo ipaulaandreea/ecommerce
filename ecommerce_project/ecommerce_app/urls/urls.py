@@ -14,5 +14,6 @@ path("checkout/",views.checkout,name="checkout"),
 # path("remove_from_cart",views.add_to_cart, name="remove_from_cart"),
 path("login_user", auth_views.LoginView.as_view()),
 path("api/", include("ecommerce_app.urls.api.urls")),
+path("access_session/",views.access_session,name="access_session")
 
 ]
