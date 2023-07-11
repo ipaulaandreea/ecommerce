@@ -37,7 +37,7 @@
   100% { transform: rotate(360deg); }
 }
 
-.delivery, 
-.cartheader{
+#delivery, 
+.cartheader {
   display: block;
 }

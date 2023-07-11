@@ -55,7 +55,6 @@ class Client (models.Model):
     user=models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
     first_name=models.CharField(max_length=50, null=False)
     last_name=models.CharField(max_length=50, null=False)
-    email=models.EmailField()
     address=models.ForeignKey(Address, on_delete=models.CASCADE, null=False, blank=False)    
 
     def __str__(self):

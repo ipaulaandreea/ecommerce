@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 def orderData(request):
     if request.method=="POST":
         orderitems= json.loads(request.POST.get('orderitems'))
-        session_id= json.loads(request.POST.get('session_id'))
+        session_id= json.loads(request.POST.get('sessionID'))
         data = orderitems.get('products')
         try:
 

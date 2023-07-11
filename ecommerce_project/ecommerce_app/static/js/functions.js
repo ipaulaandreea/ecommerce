@@ -3,36 +3,23 @@ let products={"data":{},"total":0};
 let productsData={};
 
 
-// function getSessionID() {
-//   let cookies = document.cookie.split("; ");
-//   for (let i = 0; i < cookies.length; i++) {
-//     let cookie = cookies[i].split("=");
-//     if (cookie[0] === "sessionid") {
-//       return cookie[1];
-//     }
-//   }
-//   return null; // Session ID not found
-// }
 
-// // Usage:
-// const sessionID = getSessionID();
-// console.log("Session ID:", sessionID);
 function getSessionID() {
   return $.ajax({
     url: '/access_session/',
     method: 'GET',
     dataType: 'json'
   });
+
+  getSessionID().done(function(response) {
+    let session_id = response.session_id;
+    console.log("Session ID:", session_id);
+
+  }).fail(function() {
+    console.log("Failed to retrieve session ID.");
+  });
+  return session_id;
 }
-
-// Usage:
-getSessionID().done(function(response) {
-  let session_id = response.session_id;
-  console.log("Session ID:", session_id);
-}).fail(function() {
-  console.log("Failed to retrieve session ID.");
-});
-
 
 function getCookie(name) {
   var cookieValue = null;
@@ -60,22 +47,29 @@ $(document).ready(function() {
 
 
 let displayCart = () => {
+  $(".loader").css("display", "block");
   let localSessionCart = localStorage.getItem('cart');
-  if (localSessionCart) {
+  if (localSessionCart!="{}") {
     displayCartContent(JSON.parse(localSessionCart));
-  } if (localSessionCart==="{}") {
+  } else if (localSessionCart="{}") {
     displayCartIsEmpty();
-    hideCart()
+    // hideCart();
   }
 }
 
 let hideCart=()=> {
-  $(".delivery").css("display","none");
+  $("#delivery").css("display","none");
   $(".cartheader").css("display","none");
+  $("#cart-table").css("display","none");
+
+
 }
 
 let displayCartIsEmpty = () => {
+  $(".loader").css("display", "none");
+  $("#delivery").css("display","none");
   $("#empty-cart").css("display", "block");
+
 }
 
 let displayCartContent = (cartData) => {
@@ -108,6 +102,8 @@ let displayCartContent = (cartData) => {
       } 
       generateProductsTable(productsData);
       generateSummary(orderTotal);
+      numberrows(productsData);
+      
     },
     error: function(xhr, status, error) {
       console.error(error);
@@ -124,14 +120,25 @@ let generateProductsTable = (productsData) => {
   rows.map(row => {
     $('#cart-table tbody').append(row);
   });
+  
 
   $('.loader').css('display', 'none');
   $('.cart-content').css('display', 'block');
-}
+  $("#cart-icon").text(rows.length);
+ 
+
+  } 
+
+// // let cartIcon = () => {
+//     let localSessionCart = localStorage.getItem('cart');
+//     let numberitems=Object.keys(localSessionCart);
+// //   $('#cart-icon').val(numberitems.length);
+// // }
+
 
 let createRow = (productData) => {
   return `<tr id="product-row-` + productData.id + `">
-  <th scope="row" class="border-0">
+  <th scope="row" class="border-2">
     <div class="p-2">
       <img src="` + productData.imageUrl + `" alt="" width="70" class="img-fluid rounded shadow-sm">
       <div class="ml-3 d-inline-block align-middle">
@@ -139,8 +146,8 @@ let createRow = (productData) => {
       </div>
     </div>
   </th>
-  <td class="border-0 align-middle subtotals"><strong>` + productData.price + ` $</strong></td>
-  <td class="border-10 align-middle" width="120px">
+  <td class="border-2 align-middle subtotals"><strong>` + productData.price + ` $</strong></td>
+  <td class="border-2 align-middle" width="120px">
     <div class="cart-product-quantity" width="130px">
       <div class="input-group quantity">
           <div button class="decrement-btn input-group-prepend" style="cursor: pointer" onclick="decrementQuantity(` + productData.id + `)">
@@ -154,7 +161,7 @@ let createRow = (productData) => {
     </div>
   
   </td>
-  <td id="remove_from_cart">
+  <td class="border-2 align-middle" id="remove_from_cart">
       <button class="trash-btn border-0 align-middle" id="remove-` + productData.id + `" 
       onclick="deleteCartItem(` + productData.id + `)">
           <i class="fa fa-trash"></i>
@@ -171,7 +178,7 @@ let generateSummary = (orderTotal) => {
 
 let createLi = (orderTotal) => {
   return `<li class="d-flex justify-content-between py-3 border-bottom" id="total-price">
-  <strong class="text-muted">Order Subtotal </strong><strong>` + orderTotal + `$</strong></li>`  
+  <strong class="text-muted">Order Subtotal </strong><strong>$ ` + orderTotal + `.00</strong></li>`  
 }          
 
 let updateCartTotal = (orderTotal) => {
@@ -179,6 +186,13 @@ let updateCartTotal = (orderTotal) => {
   $('#list').append(createLi(orderTotal));
   $('.cart-summary').css('display', 'block');
 };
+
+// let numberrows = (productsData) => {
+//   let localSessionCart = localStorage.getItem('cart');
+//   $("#cart-icon").text((Object.keys(localSessionCart).length));
+ 
+// }
+
 
 function findObjectByValue(data, key, value) {
   for (let i = 0; i < data.length; i++) {
@@ -197,7 +211,10 @@ let deleteCartItem = (id) => {
   let deletedProductTotal = product["qty"] * product["price"];
   delete cart[cartid];
   localStorage.setItem("cart", JSON.stringify(cart));
+  let numberofitems=((Object.keys(cart)).length);
   $('#product-row-' + id).remove();
+  $("#cart-icon").text(numberofitems);
+  // $('#cart-icon').append(numberofitems);
   orderTotal -= deletedProductTotal;
   updateCartTotal(orderTotal);
   console.log(JSON.stringify(cart));
@@ -248,7 +265,7 @@ let updateQty=(prod,qty)=>{
 }
 
 
-let submitOrder=(cart)=>{
+let submitOrder = async (cart) =>{
   cart=localStorage.getItem("cart")
   console.log(cart)
   // $(".loader").css("display", "block");
@@ -262,7 +279,7 @@ let submitOrder=(cart)=>{
   // },]
   // };
   
-
+  
   let bigList=[];
   let finallist={};
   let productIds=Object.keys(input);
@@ -274,13 +291,14 @@ let submitOrder=(cart)=>{
       console.log("finalist: " + JSON.stringify(finallist))    
     
 
+  let session_id=await getSessionID();
   
   $.ajax({
     url: 'api/orders/create',
     method: 'POST',
     data: {
       orderitems: JSON.stringify(finallist),
-      session_id: sessionID,
+      sessionID: JSON.stringify(session_id['session_id']),
       csrfmiddlewaretoken: csrfToken
     },
     
