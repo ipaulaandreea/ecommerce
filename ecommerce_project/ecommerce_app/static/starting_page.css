@@ -1,12 +1,33 @@
 /* .p-5{
     background-color: #20c997;
 } */
+.t4s-top-heading{
+    text-align: center;
+    border-radius: 10px;
+    /* box-shadow: 0 2px 4px 0 rgba(0,0,0,.2); */
+}
 
+/* .card-body {
+    height: 15px;
+    
+} */
+
+/* .card-img-center{
+    image-resolution: 10;
+} */
 .jumbotron{
-background-image: url("https://www.technogym.com/wpress/wp-content/uploads/2019/04/indoor-plants-header.jpg");
+background-color:#19aa8d ;
+background-image: url("https://images.unsplash.com/photo-1530049478161-0780526964f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80");
+/* background-image: url("https://www.technogym.com/wpress/wp-content/uploads/2019/04/indoor-plants-header.jpg"); */
 text-align: left;
-border-radius: 30px;
+
+text-decoration: rgb(255, 255, 255);
+border-radius: 10px;
 box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+}
+
+.text1 {
+color: aliceblue;
 }
 
 .btn {

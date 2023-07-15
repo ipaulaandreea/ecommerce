@@ -14,22 +14,36 @@ Magazinul
 <script src="{% static 'js/productsList.js' %}" async></script>
 <br></br>
 
-<div class="jumbotron">
-  <div class="p-5 bg-body-tertiary rounded-4">
+{% comment %} <div class="jumbotron">
+  <div class="p-5 bg-body-tertiary">
     <h1 class="text-body-emphasis">50% off all products</h1>
       <p class="lead">
        Only what's best for your plants.
        </p>
   </div>
+</div> {% endcomment %}
+<div>
+<div class="t4s-top-heading t4s_des_title_2 t4s-text-center " style="--heading-height: px;--tophead_mb: 30px;"><div class="heading-testimonials-star ">
+		
+  <h3 class="t4s-section-title t4s-title"><span>Welcome to Magic Garden</span></h3></div>
+  
+<span class="t4s-section-des t4s-subtitle">A family-based business that provides high-quality plants at affordable prices</span></div>
 </div>
-<br></br>
+
+
+{% comment %} <div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4" id="text1">50% off all products</h1>
+    <p class="lead" id="text2" >Only what's best for your plants.</p>
+  </div>
+</div> {% endcomment %}
 <br></br>
 <div class="container">
 
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
     {%for product in products%}
     <div class="col">
-      <div class="card shadow-sm">
+      <div class="card shadow-sm" style="max-width: 18 rem;">
         <img src="{{product.imageURL}}" class="card-img-top">
         <div class="card-body">
           <h5 class="card-title text-uppercase">{{product.title}}</h5>

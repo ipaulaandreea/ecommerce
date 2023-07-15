@@ -4,44 +4,53 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from ..models import Product, Cart, Order
-from ..forms import UserForm
-import json
-from django.http import HttpResponse, JsonResponse
-from django.contrib.sessions.models import Session
-from django.contrib.auth.models import User
+from ..models import Product, Cart, User
+from ..forms import UserCreationForm
+from django.http import JsonResponse
 
 def login_user(request):
     if request.method=="POST": 
-        username = request.POST["username"]
+        email = request.POST["email"]
         password = request.POST["password"]
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
             return redirect("starting-page")
         else:
             messages.success (request, ("Something went wrong! Please try again."))
             return render(request, "ecommerce_app/login.html")
-
     else:
         return render(request, "ecommerce_app/login.html")
     
 def register_user(request):
-    if request.method=="POST":
-        form=UserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username=form.cleaned_data['username']
-            password=form.cleaned_data['password1']
-            user=authenticate(username=username, password=password)
-            login(request,user)
-            messages.success(request, ("Registration successful!"))
-            return redirect ('starting-page')
-    else: 
-        form=UserForm()
+    try:
+        if request.method=="POST":
+            form=UserCreationForm(request.POST)
+            if form.is_valid():
+                # first_name=form.cleaned_data['first_name']
+                # last_name=form.cleaned_data['last_name']
+                # username=form.cleaned_data['username']
+                # email=form.cleaned_data['email']
+                # password1=form.cleaned_data['password1']
+                # password2=form.cleaned_data['password2']
+                form.save()
+                 
+                # user=form.cleaned_data['user']
+                # authenticate(first_name=first_name, last_name=last_name, username=username,email=email)
+                # login_user()
+                messages.success(request, ("Registration successful!"))
+                return redirect ('starting-page')
+        else: 
+            form=UserCreationForm()
+        # context={
+        # 'form': form
+        # }
+    except Exception as e:
+        messages.error(request, ("Something went wrong"))
+    
     context={
-    'form': form
-    }
+        'form': form
+        }
     return render(request, "ecommerce_app/register.html",context)
 
 def logout_user(request):
@@ -85,3 +94,6 @@ def access_session(request):
     if request.method=="GET":
         session_id = request.session.session_key
     return JsonResponse({'session_id': session_id})
+
+def beforesubmit(request):
+    return render (request, "ecommerce_app/beforesubmit.html")

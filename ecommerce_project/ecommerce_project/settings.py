@@ -133,6 +133,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+AUTH_USER_MODEL = 'ecommerce_app.User'
+AUTHENTICATION_BACKENDS= (
+    # 'django.contrib.auth.backends.ModelBackend',
+    # 'django.contrib.auth.backends.AllowAllUsersModelsBackend',
+    'ecommerce_app.backends.CaseInsensitiveModelBackend',
+    # "django.contrib.auth.backends.ModelBackend",
+    # 'django.contrib.auth.backends.AllowAllUsersModelsBackend'
+)
+
 STATICFILES_DIRS=[
     BASE_DIR/"static"
 ]

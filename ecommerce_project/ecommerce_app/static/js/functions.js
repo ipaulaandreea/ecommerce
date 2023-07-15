@@ -53,7 +53,7 @@ let displayCart = () => {
     displayCartContent(JSON.parse(localSessionCart));
   } else if (localSessionCart="{}") {
     displayCartIsEmpty();
-    // hideCart();
+  
   }
 }
 
@@ -99,10 +99,15 @@ let displayCartContent = (cartData) => {
             orderTotal+=productTotal;
             products["total"]=orderTotal;
           } 
+          cartData[productId].title = obj.title
+          cartData[productId].price=obj.price
+          localStorage.setItem("cart", JSON.stringify(cartData));
+
       } 
       generateProductsTable(productsData);
       generateSummary(orderTotal);
-      numberrows(productsData);
+      // numberrows(productsData);
+      // generateCartResult(productsData);
       
     },
     error: function(xhr, status, error) {
@@ -110,6 +115,7 @@ let displayCartContent = (cartData) => {
     }
   });
 }
+
 
 let generateProductsTable = (productsData) => {
   let rows = [];
@@ -177,7 +183,7 @@ let generateSummary = (orderTotal) => {
 };
 
 let createLi = (orderTotal) => {
-  return `<li class="d-flex justify-content-between py-3 border-bottom" id="total-price">
+  return `<li class="d-flex justify-content-between py-3" id="total-price">
   <strong class="text-muted">Order Subtotal </strong><strong>$ ` + orderTotal + `.00</strong></li>`  
 }          
 
@@ -192,6 +198,7 @@ let updateCartTotal = (orderTotal) => {
 //   $("#cart-icon").text((Object.keys(localSessionCart).length));
  
 // }
+
 
 
 function findObjectByValue(data, key, value) {
@@ -322,3 +329,5 @@ let submitOrder = async (cart) =>{
     }
   })
 }
+
+

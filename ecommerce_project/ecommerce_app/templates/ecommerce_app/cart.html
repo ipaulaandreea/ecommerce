@@ -53,8 +53,27 @@ Shopping Cart
                 </tbody>
               </table>
             </div>
-            <!-- End -->
+            
+            <button onclick="location.href='{% url 'beforesubmit' %}'" class="btn btn-dark rounded-pill py-2 btn-block" >Procceed to order details </button> 
+            <div class="col-lg-4" style="float:right;">
+              
+            
+                <ul class="list-unstyled mb-2" id="list">
+                </ul>
+                <ul class="list-unstyled mb-4">
+  
+                </ul>
+              
+              </div>
+              
+            </div>
+
+            </div>
           </div>
+            
+            <!-- End -->
+            <!-- NU STERGE CE E SUB MINE, COPIAZA-L IN BEFORESUBMIT -->
+          {% comment %} </div>
         </div>
         <div class="delivery" style="display: block;" id="delivery">
         <div class="row py-5 p-4 bg-white rounded shadow-sm">
@@ -178,11 +197,12 @@ Shopping Cart
       </div>
     </div>
   </div>
-</div>
+</div> {% endcomment %}
 
   <script src="{% static 'js/qty.js' %}" ></script>
  
   <script src="{% static 'js/functions.js' %}" ></script>
+  {% comment %} <script src="{% static 'js/beforesubmit.js' %}" ></script> {% endcomment %}
 
   {% block extra_scripts %}
 
